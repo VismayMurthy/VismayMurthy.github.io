@@ -1,99 +1,343 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark-theme">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vismay Murthy V - Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Define Core Design Variables */
+        :root {
+            /* NEW COLORS */
+            --primary-gradient: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%); /* Electric Teal/Bright Blue */
+            --secondary-gradient: linear-gradient(135deg, #FF6B8B 0%, #FF3D71 100%); /* Vibrant Magenta/Pink */
+            --accent-gradient: linear-gradient(135deg, #00FFD1 0%, #009688 100%); /* Teal Accent */
+            --transition-speed: 0.4s;
+
+            /* Dark Theme Defaults (Deep Navy Base) */
+            --bg-body: #0A0F1E; /* Deep Navy */
+            --bg-dark-end: #141A35;
+            --color-text-title: #ffffff; /* Explicit white for main headings/names */
+            --color-text-main: #E2E8F0; /* Light text */
+            --color-text-secondary: #718096; /* Gray text */
+            --bg-glass-card: rgba(30, 41, 61, 0.5); /* Semi-transparent dark navy */
+            --border-glass-card: rgba(255, 255, 255, 0.1);
+            --bg-nav-link: rgba(30, 41, 61, 0.4);
+            --border-nav-link: rgba(255, 255, 255, 0.08);
+            --bg-shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Light Theme Overrides (Clean Gray/White Base) */
+        .light-theme {
+            --bg-body: #F4F7FA;
+            --bg-dark-end: #FFFFFF;
+            --color-text-title: #1F2937; /* Dark text for main headings/names */
+            --color-text-main: #1F2937; /* Dark text */
+            --color-text-secondary: #6B7280; /* Gray text */
+            --bg-glass-card: rgba(255, 255, 255, 0.9);
+            --border-glass-card: rgba(0, 0, 0, 0.1);
+            --bg-nav-link: rgba(255, 255, 255, 0.7);
+            --border-nav-link: rgba(0, 0, 0, 0.1);
+            --bg-shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f172a; /* A darker slate background */
+            background: linear-gradient(135deg, var(--bg-body) 0%, var(--bg-dark-end) 100%);
+            color: var(--color-text-main);
+            overflow-x: hidden;
+            position: relative;
+            transition: color var(--transition-speed), background var(--transition-speed);
         }
-        .main-content::-webkit-scrollbar {
-            width: 8px;
+
+        /* Animated background */
+        .bg-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, var(--bg-body) 0%, var(--bg-dark-end) 100%);
         }
-        .main-content::-webkit-scrollbar-track {
-            background: #1e293b;
+
+        .bg-animated::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 114, 255, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 61, 113, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(0, 255, 209, 0.15) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            transition: background var(--transition-speed);
         }
-        .main-content::-webkit-scrollbar-thumb {
-            background: #475569;
-            border-radius: 4px;
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(10px) rotate(-1deg); }
         }
-        .main-content::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
+
+        /* Refined Glassmorphism for Cards */
+        .glass-card {
+            background: var(--bg-glass-card);
+            backdrop-filter: blur(12px); /* Slightly reduced blur for stability */
+            border: 1px solid var(--border-glass-card);
+            box-shadow: 0 4px 20px 0 var(--bg-shadow);
+            transition: all var(--transition-speed);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
         }
+
+        .glass-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px 0 var(--bg-shadow);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Navigation styles - Artifact-Free Design */
         .nav-link {
-            @apply flex items-center space-x-4 px-4 py-3 text-gray-300 rounded-lg hover:bg-slate-700 hover:text-white transition-all duration-200;
+            @apply flex items-center space-x-4 px-4 py-3 rounded-xl transition-all duration-300 relative overflow-hidden; 
+            background: var(--bg-nav-link);
+            color: var(--color-text-main);
+            border: 1px solid var(--border-nav-link);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); /* Subtle inner shadow for dark theme */
+            transform: translateZ(0); 
+            font-weight: 500;
         }
+        .light-theme .nav-link {
+            box-shadow: none;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-link:hover::before {
+            left: 0;
+        }
+
+        .nav-link:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
         .active-link {
-            @apply bg-teal-600 text-white shadow-lg;
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4);
+            border-color: transparent;
+            transform: translateZ(0);
         }
-        .feed-card {
-            @apply bg-slate-800 border border-slate-700 rounded-xl shadow-lg;
+
+        .active-link::before {
+            left: 0;
+        }
+
+        /* Rest of the styles */
+        .typing-animation {
+            border-right: 2px solid #00C6FF;
+            display: inline-block;
+            animation: blink-caret 0.75s step-end infinite; 
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #00C6FF; }
+        }
+
+        .timeline-dot {
+            @apply absolute -left-12 top-1 h-8 w-8 rounded-full border-4 flex items-center justify-center;
+            border-color: var(--bg-body);
+            background: var(--primary-gradient);
+            animation: pulse 2s infinite;
+        }
+
+        /* THEME SWITCH REDESIGN */
+        .theme-toggle {
+            @apply w-14 h-7 rounded-full transition-all duration-300 relative cursor-pointer;
+            background: var(--bg-nav-link);
+            border: 1px solid var(--border-nav-link);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5); /* Inner shadow for switch depth */
+        }
+
+        .theme-toggle.active {
+            background: var(--primary-gradient);
+            border-color: transparent;
+        }
+
+        .theme-toggle::before {
+            content: '';
+            @apply absolute top-0.5 left-0.5 w-6 h-6 rounded-full transition-all duration-300;
+            background: white;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4); /* Knob shadow */
+        }
+
+        .theme-toggle.active::before {
+            transform: translateX(24px); /* Moves knob 24px (14*2 - 4 - 24 = 0) */
+        }
+
+        .theme-toggle .fa-moon { 
+            opacity: 1; transition: opacity 0.3s ease; 
+            color: var(--color-text-secondary); 
+            font-size: 0.8rem;
+            position: absolute; top: 50%; left: 10px; transform: translateY(-50%);
+        }
+        .theme-toggle.active .fa-moon { opacity: 0 !important;}
+        
+        .theme-toggle .fa-sun { 
+            opacity: 0; transition: opacity 0.3s ease; 
+            color: white;
+            font-size: 0.8rem;
+            position: absolute; top: 50%; right: 5px; transform: translateY(-50%);
+        }
+        .theme-toggle.active .fa-sun { opacity: 1 !important;}
+
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Mapping utility classes to CSS variables */
+        .text-slate-200 { color: var(--color-text-main) !important; }
+        .text-slate-400 { color: var(--color-text-secondary) !important; }
+        .text-white { color: white; }
+        .h1-color { color: var(--color-text-title) !important; }
+
+        aside { 
+            position: relative; 
+            z-index: 10; 
+        }
+
+        /* Profile image specific styling for border and fit */
+        .profile-img-container {
+            border: 4px solid var(--border-glass-card);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+        }
+        .light-theme .profile-img-container {
+            border: 4px solid rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
-<body class="text-slate-300">
+<body class="text-slate-200">
+    <!-- Theme Switch Wrapper (Moved out of <aside> to be globally positioned) -->
+    <div class="fixed top-0 right-0 p-4 z-50">
+        <div class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i>
+        </div>
+    </div>
 
-    <div class="container mx-auto">
+    <!-- Animated Background -->
+    <div class="bg-animated"></div>
+
+    <div class="container mx-auto relative z-10">
         <div class="flex flex-col md:flex-row">
 
             <!-- Left Sidebar -->
             <aside class="w-full md:w-1/4 lg:w-1/5 p-4 md:sticky md:top-0 md:h-screen">
                 <div class="flex flex-col h-full">
                     <!-- Profile Section -->
-                    <div class="text-center p-4 border-b border-slate-700">
-                        <div class="w-24 h-24 rounded-full bg-teal-500 mx-auto flex items-center justify-center text-4xl font-bold text-white mb-4">
-                            VM
+                    <div class="text-center p-6 glass-card rounded-2xl mb-6">
+                        <!-- START: PROFILE IMAGE INTEGRATION with correct raw GitHub URL -->
+                        <div class="w-28 h-28 rounded-full mx-auto mb-4 relative overflow-hidden profile-img-container">
+                            <img src="https://raw.githubusercontent.com/VismayMurthy/VismayMurthy.github.io/main/1.jpeg" 
+                                 alt="Vismay Murthy V Profile" 
+                                 class="w-full h-full rounded-full" 
+                                 style="object-fit: cover; object-position: center;"/>
                         </div>
-                        <h1 class="text-2xl font-bold text-white">Vismay Murthy V</h1>
-                        <p class="text-teal-400">AI & Data Science Engineer</p>
+                        <!-- END: PROFILE IMAGE INTEGRATION -->
+                        
+                        <h1 class="text-2xl font-bold h1-color mb-2">Vismay Murthy V</h1>
+                        <p class="gradient-text text-lg font-medium typing-animation" data-text="AI & Data Science Engineer">AI & Data Science Engineer</p>
+                        <div class="mt-4 flex justify-center space-x-2">
+                            <div class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>
+                            <div class="w-2 h-2 rounded-full bg-purple-400 animate-pulse" style="animation-delay: 0.2s;"></div>
+                            <div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" style="animation-delay: 0.4s;"></div>
+                        </div>
                     </div>
 
                     <!-- Navigation -->
-                    <nav class="mt-6 flex-grow space-y-2">
-                        <a href="#about" class="nav-link active-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                    <nav class="flex-grow space-y-3">
+                        <a href="#about" class="nav-link active-link" data-section="about">
+                            <i class="fas fa-user text-lg"></i>
                             <span>About</span>
                         </a>
-                        <a href="#experience" class="nav-link">
-                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" /><path fill-rule="evenodd" d="M6 3a3 3 0 013-3h2a3 3 0 013 3v1.5a1 1 0 01-.553.894L16 6.5v1.5a1 1 0 01-1.447.894l-2.228-1.114a1 1 0 00-1.05 0l-2.228 1.114A1 1 0 016 8V6.5L7.553 5.394A1 1 0 017 4.5V3zM4 9a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM4 13a1 1 0 011-1h6a1 1 0 110 2H5a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>
+                        <a href="#experience" class="nav-link" data-section="experience">
+                            <i class="fas fa-briefcase text-lg"></i>
                             <span>Experience</span>
                         </a>
-                        <a href="#projects" class="nav-link">
-                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                        <a href="#projects" class="nav-link" data-section="projects">
+                            <i class="fas fa-code text-lg"></i>
                             <span>Projects</span>
                         </a>
-                         <a href="#skills" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0L7.86 5.89c-.32.13-.65.3-.98.5l-2.5 1.12c-1.45.65-2.02 2.36-1.12 3.65l1.63 2.32c.23.32.4.68.52 1.05l.76 2.39c.28 1.5.98 1.5 1.26 0l.76-2.39c.12-.37.29-.73.52-1.05l1.63-2.32c.9-1.29.33-3-1.12-3.65l-2.5-1.12a2.98 2.98 0 01-.98-.5L11.49 3.17z" clip-rule="evenodd" /></svg>
+                        <a href="#skills" class="nav-link" data-section="skills">
+                            <i class="fas fa-cogs text-lg"></i>
                              <span>Skills</span>
                          </a>
-                        <a href="#education" class="nav-link">
-                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L9 9.58v4.42l-4.5-2v-1.84l-1 .5a1 1 0 00-.5.87V15a1 1 0 00.5.87l5 2.5a1 1 0 001 0l5-2.5a1 1 0 00.5-.87v-2.42a1 1 0 00-.5-.87l-1-.5V9.58l6.5-2.66a1 1 0 000-1.84l-7-3zM9 14.58V10.16l-4.5-1.83v2.08l4.5 2.15zM11 14.58V12.33l4.5-2.15v-2.08L11 10.16v4.42zM10 8.42L5.5 6.59l4.5-1.83L14.5 6.59 10 8.42z" /></svg>
+                        <a href="#education" class="nav-link" data-section="education">
+                            <i class="fas fa-graduation-cap text-lg"></i>
                             <span>Education</span>
                         </a>
-                        <a href="#certificates" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
+                        <a href="#certificates" class="nav-link" data-section="certificates">
+                            <i class="fas fa-certificate text-lg"></i>
                             <span>Certificates</span>
                         </a>
-                        <a href="#contact" class="nav-link">
-                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" clip-rule="evenodd" /></svg>
+                        <a href="#contact" class="nav-link" data-section="contact">
+                            <i class="fas fa-envelope text-lg"></i>
                             <span>Contact</span>
                         </a>
                     </nav>
 
                     <!-- Social Links -->
-                    <div class="mt-6 p-4 border-t border-slate-700">
+                    <div class="mt-6 p-4 glass-card rounded-xl">
                         <div class="flex justify-center space-x-6">
-                            <a href="https://linkedin.com/in/vismay-murthy-20bb9a283" target="_blank" class="text-blue-500 hover:text-blue-400 transition duration-300">
-                                <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                            <a href="https://linkedin.com/in/vismay-murthy-20bb9a283" target="_blank" class="group relative">
+                                <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center transition-all duration-300 group-hover:bg-blue-500/40 group-hover:scale-110">
+                                    <i class="fab fa-linkedin-in text-blue-400 group-hover:text-blue-300"></i>
+                                </div>
+                                <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    LinkedIn
+                                </div>
                             </a>
-                            <a href="https://github.com/VismayMurthy" target="_blank" class="text-gray-300 hover:text-white transition duration-300">
-                                <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            <a href="https://github.com/VismayMurthy" target="_blank" class="group relative">
+                                <div class="w-10 h-10 rounded-full bg-gray-500/20 flex items-center justify-center transition-all duration-300 group-hover:bg-gray-500/40 group-hover:scale-110">
+                                    <i class="fab fa-github text-gray-300 group-hover:text-white"></i>
+                                </div>
+                                <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    GitHub
+                                </div>
+                            </a>
+                            <a href="mailto:vismayyou7@gmail.com" class="group relative">
+                                <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center transition-all duration-300 group-hover:bg-red-500/40 group-hover:scale-110">
+                                    <i class="fas fa-envelope text-red-400 group-hover:text-red-300"></i>
+                                </div>
+                                <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    Email
+                                </div>
                             </a>
                         </div>
                     </div>
@@ -104,179 +348,465 @@
             <main class="w-full md:w-3/4 lg:w-4/5 p-4 md:h-screen md:overflow-y-auto main-content">
                 <div class="space-y-8">
                     <!-- About Me Card -->
-                    <section id="about" class="feed-card p-6 md:p-8">
-                        <h2 class="text-2xl font-bold text-white mb-4">About Me</h2>
-                        <p class="text-slate-300 leading-relaxed">
-                           As a driven and analytical AI & Data Science Engineer, I bring a solid foundation in Python, SQL, and data visualization, complemented by hands-on internship experience. I thrive on transforming complex datasets into actionable insights and am passionate about building innovative solutions, like the AI-powered chatbot I developed. I am eager to apply my skills to solve real-world challenges and contribute to a forward-thinking team.
-                        </p>
+                    <section id="about" class="glass-card p-8 rounded-2xl fade-in">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4" style="background: var(--primary-gradient);">
+                                <i class="fas fa-user text-white text-xl"></i>
+                            </div>
+                            <h2 class="text-3xl font-bold h1-color">About Me</h2>
+                        </div>
+                        <div class="prose prose-lg max-w-none">
+                            <p class="text-slate-200 leading-relaxed text-lg">
+                                As a driven and analytical <span class="gradient-text font-semibold">AI & Data Science Engineer</span>, I bring a solid foundation in Python, SQL, and data visualization, complemented by hands-on internship experience. I thrive on transforming complex datasets into actionable insights and am passionate about building innovative solutions, like the AI-powered chatbot I developed.
+                            </p>
+                            <p class="text-slate-200 leading-relaxed text-lg mt-4">
+                                I am eager to apply my skills to solve real-world challenges and contribute to a forward-thinking team that values innovation and continuous learning.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex flex-wrap gap-4">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-green-400 animate-pulse"></div>
+                                <span class="text-sm text-slate-400">Available for opportunities</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
+                                <span class="text-sm text-slate-400">Open to collaboration</span>
+                            </div>
+                        </div>
                     </section>
 
                     <!-- Experience Card -->
-                    <section id="experience" class="feed-card p-6 md:p-8">
-                        <h2 class="text-2xl font-bold text-white mb-6">Experience</h2>
-                        <div class="relative border-l-2 border-slate-700 ml-3 pl-8 space-y-12">
+                    <section id="experience" class="glass-card p-8 rounded-2xl fade-in">
+                        <div class="flex items-center mb-8">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4" style="background: var(--secondary-gradient);">
+                                <i class="fas fa-briefcase text-white text-xl"></i>
+                            </div>
+                            <h2 class="text-3xl font-bold h1-color">Experience</h2>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute left-6 top-0 bottom-0 w-0.5" style="background: var(--primary-gradient);"></div>
+                            <div class="space-y-8">
                             <!-- Timeline Item 1 -->
-                            <div class="relative">
-                                <div class="absolute -left-12 top-1 h-8 w-8 bg-slate-700 rounded-full border-4 border-slate-800 flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-teal-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 3a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zM6 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zM6 9a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zM9 14a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>
-                                </div>
-                                <h3 class="font-bold text-white">Data Science Intern at <span class="text-teal-400">ShadowFox</span></h3>
-                                <p class="text-sm text-slate-400 mb-2">Feb 2025</p>
-                                <p class="text-slate-300">Gained expertise in Data analysis and visualization. I was responsible for the Delhi AQI project, leveraging Python and visualization libraries.</p>
+                                <div class="relative flex items-start space-x-6">
+                                    <div class="timeline-dot">
+                                        <i class="fas fa-chart-line text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1 glass-card p-6 rounded-xl">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h3 class="text-xl font-bold h1-color">Data Science Intern</h3>
+                                            <span class="px-3 py-1 rounded-full text-xs font-medium" style="background: var(--accent-gradient); color: white;">Feb 2025</span>
+                                        </div>
+                                        <p class="text-lg font-semibold gradient-text mb-2">ShadowFox</p>
+                                        <p class="text-slate-200 leading-relaxed">Gained expertise in Data analysis and visualization. I was responsible for the Delhi AQI project, leveraging Python and visualization libraries to create impactful data stories.</p>
+                                        <div class="mt-4 flex flex-wrap gap-2">
+                                            <span class="px-3 py-1 rounded-full text-xs bg-blue-500/20 text-blue-300">Python</span>
+                                            <span class="px-3 py-1 rounded-full text-xs bg-green-500/20 text-green-300">Data Visualization</span>
+                                            <span class="px-3 py-1 rounded-full text-xs bg-purple-500/20 text-purple-300">Matplotlib</span>
+                                        </div>
                             </div>
-                             <!-- Timeline Item 2 -->
-                            <div class="relative">
-                                <div class="absolute -left-12 top-1 h-8 w-8 bg-slate-700 rounded-full border-4 border-slate-800 flex items-center justify-center">
-                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-teal-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 3a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zM6 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zM6 9a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zM9 14a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>
                                 </div>
-                                <h3 class="font-bold text-white">AI/ML Intern at <span class="text-teal-400">Edunet Foundation</span></h3>
-                                <p class="text-sm text-slate-400 mb-2">Nov 2024 - Jan 2025</p>
-                                <p class="text-slate-300">Designed and developed an AI-powered Healthcare Assistant Chatbot using cutting-edge AI/ML tools as part of a Microsoft and SAP CSR initiative.</p>
+
+                                <!-- Timeline Item 2 -->
+                                <div class="relative flex items-start space-x-6">
+                                    <div class="timeline-dot">
+                                        <i class="fas fa-robot text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1 glass-card p-6 rounded-xl">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h3 class="text-xl font-bold h1-color">AI/ML Intern</h3>
+                                            <span class="px-3 py-1 rounded-full text-xs font-medium" style="background: var(--accent-gradient); color: white;">Nov 2024 - Jan 2025</span>
+                                        </div>
+                                        <p class="text-lg font-semibold gradient-text mb-2">Edunet Foundation</p>
+                                        <p class="text-slate-200 leading-relaxed">Designed and developed an AI-powered Healthcare Assistant Chatbot using cutting-edge AI/ML tools as part of a Microsoft and SAP CSR initiative.</p>
+                                        <div class="mt-4 flex flex-wrap gap-2">
+                                            <span class="px-3 py-1 rounded-full text-xs bg-red-500/20 text-red-300">AI/ML</span>
+                                            <span class="px-3 py-1 rounded-full text-xs bg-orange-500/20 text-orange-300">Chatbot</span>
+                                            <span class="px-3 py-1 rounded-full text-xs bg-blue-500/20 text-blue-300">Microsoft</span>
+                                        </div>
                             </div>
-                             <!-- Timeline Item 3 -->
-                            <div class="relative">
-                                <div class="absolute -left-12 top-1 h-8 w-8 bg-slate-700 rounded-full border-4 border-slate-800 flex items-center justify-center">
-                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-teal-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 3a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zM6 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zM6 9a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zM9 14a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>
                                 </div>
-                                <h3 class="font-bold text-white">Data Analyst Intern at <span class="text-teal-400">YBI Foundation</span></h3>
-                                <p class="text-sm text-slate-400 mb-2">Sep 2024 - Oct 2024</p>
-                                <p class="text-slate-300">Gained expertise in Python, Excel, and SQL. Created insightful dashboards and visualizations using Tableau and Power BI.</p>
+
+                                <!-- Timeline Item 3 -->
+                                <div class="relative flex items-start space-x-6">
+                                    <div class="timeline-dot">
+                                        <i class="fas fa-database text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1 glass-card p-6 rounded-xl">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h3 class="text-xl font-bold h1-color">Data Analyst Intern</h3>
+                                            <span class="px-3 py-1 rounded-full text-xs font-medium" style="background: var(--accent-gradient); color: white;">Sep 2024 - Oct 2024</span>
+                                        </div>
+                                        <p class="text-lg font-semibold gradient-text mb-2">YBI Foundation</p>
+                                        <p class="text-slate-200 leading-relaxed">Gained expertise in Python, Excel, and SQL. Created insightful dashboards and visualizations using Tableau and Power BI to drive data-driven decisions.</p>
+                                        <div class="mt-4 flex flex-wrap gap-2">
+                                            <span class="px-3 py-1 rounded-full text-xs bg-yellow-500/20 text-yellow-300">Excel</span>
+                                            <span class="px-3 py-1 rounded-full text-xs bg-blue-500/20 text-blue-300">SQL</span>
+                                            <span class="px-3 py-1 rounded-full text-xs bg-purple-500/20 text-purple-300">Tableau</span>
+                                            <span class="px-3 py-1 rounded-full text-xs bg-orange-500/20 text-orange-300">Power BI</span>
+                                        </div>
+                            </div>
+                                </div>
                             </div>
                         </div>
                     </section>
 
 
                     <!-- Projects Card -->
-                    <section id="projects" class="feed-card p-6 md:p-8">
-                        <h2 class="text-2xl font-bold text-white mb-6">Projects</h2>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-700 flex flex-col">
-                                <h3 class="font-bold text-white">AI Powered Healthcare-Chatbot</h3><p class="text-sm text-slate-400">Final Year Project</p>
-                                <p class="mt-2 text-slate-300 flex-grow" data-project-desc>Created a chatbot app using an LLM, exploring RAG with custom PDF data for insightful responses.</p>
-                                <div class="mt-4">
-                                    <a href="https://github.com/VismayMurthy/Medibot_2.0" target="_blank" class="block w-full text-center bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition duration-300 text-sm">View Project on GitHub</a>
+                    <section id="projects" class="glass-card p-8 rounded-2xl fade-in">
+                        <div class="flex items-center mb-8">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4" style="background: var(--accent-gradient);">
+                                <i class="fas fa-code text-white text-xl"></i>
+                            </div>
+                            <h2 class="text-3xl font-bold h1-color">Projects</h2>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <!-- Project 1 -->
+                            <div class="project-card group">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: var(--primary-gradient);">
+                                            <i class="fas fa-robot text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-bold h1-color">AI Powered Healthcare-Chatbot</h3>
+                                            <p class="text-sm text-slate-400">Final Year Project</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <span class="px-2 py-1 rounded-full text-xs bg-green-500/20 text-green-300">AI/ML</span>
+                                        <span class="px-2 py-1 rounded-full text-xs bg-blue-500/20 text-blue-300">LLM</span>
+                                    </div>
+                                </div>
+                                <p class="text-slate-200 leading-relaxed mb-6">Created a chatbot app using an LLM, exploring RAG with custom PDF data for insightful responses. This project demonstrates advanced AI integration and natural language processing capabilities.</p>
+                                <div class="flex space-x-3">
+                                    <a href="https://github.com/VismayMurthy/Medibot_2.0" target="_blank" class="btn-primary flex-1 text-center">
+                                        <i class="fab fa-github mr-2"></i>View on GitHub
+                                    </a>
+                                    <button class="px-4 py-3 rounded-xl border border-slate-600 text-slate-200 hover:border-slate-500 hover:text-white transition-all duration-300">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-700 flex flex-col">
-                                <h3 class="font-bold text-white">Air Quality Index Analysis</h3><p class="text-sm text-slate-400">Internship Project</p>
-                                <p class="mt-2 text-slate-300 flex-grow" data-project-desc>Analyzed and visualized Delhi's AQI using Python, Matplotlib, and Seaborn to practice data storytelling.</p>
-                                <div class="mt-4">
-                                    <a href="https://github.com/VismayMurthy/Shadow_Fox_Data_Science_Internship/tree/main/Task%202" target="_blank" class="block w-full text-center bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition duration-300 text-sm">View Project on GitHub</a>
+
+                            <!-- Project 2 -->
+                            <div class="project-card group">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: var(--secondary-gradient);">
+                                            <i class="fas fa-chart-line text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-bold h1-color">Air Quality Index Analysis</h3>
+                                            <p class="text-sm text-slate-400">Internship Project</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <span class="px-2 py-1 rounded-full text-xs bg-purple-500/20 text-purple-300">Data Viz</span>
+                                        <span class="px-2 py-1 rounded-full text-xs bg-orange-500/20 text-orange-300">Python</span>
+                                    </div>
+                                </div>
+                                <p class="text-slate-200 leading-relaxed mb-6">Analyzed and visualized Delhi's AQI using Python, Matplotlib, and Seaborn to practice data storytelling. This project showcases data analysis skills and environmental data insights.</p>
+                                <div class="flex space-x-3">
+                                    <a href="https://github.com/VismayMurthy/Shadow_Fox_Data_Science_Internship/tree/main/Task%202" target="_blank" class="btn-primary flex-1 text-center">
+                                        <i class="fab fa-github mr-2"></i>View on GitHub
+                                    </a>
+                                    <button class="px-4 py-3 rounded-xl border border-slate-600 text-slate-200 hover:border-slate-500 hover:text-white transition-all duration-300">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </section>
 
                     <!-- Skills Card -->
-                    <section id="skills" class="feed-card p-6 md:p-8">
-                        <h2 class="text-2xl font-bold text-white mb-6">Skills</h2>
+                    <section id="skills" class="glass-card p-8 rounded-2xl fade-in">
+                        <div class="flex items-center mb-8">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4" style="background: var(--primary-gradient);">
+                                <i class="fas fa-cogs text-white text-xl"></i>
+                            </div>
+                            <h2 class="text-3xl font-bold h1-color">Skills</h2>
+                        </div>
+                        
+                        <!-- Technical Skills -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold h1-color mb-4 flex items-center">
+                                <i class="fas fa-code text-blue-400 mr-2"></i>
+                                Technical Skills
+                            </h3>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="skill-tag" data-skill="Python">
+                                    <i class="fab fa-python mr-2"></i>Python
+                                </span>
+                                <span class="skill-tag" data-skill="SQL">
+                                    <i class="fas fa-database mr-2"></i>SQL
+                                </span>
+                                <span class="skill-tag" data-skill="Excel">
+                                    <i class="fas fa-table mr-2"></i>Excel
+                                </span>
+                                <span class="skill-tag" data-skill="Power BI">
+                                    <i class="fas fa-chart-bar mr-2"></i>Power BI
+                                </span>
+                                <span class="skill-tag" data-skill="Tableau">
+                                    <i class="fas fa-chart-pie mr-2"></i>Tableau
+                                </span>
+                                <span class="skill-tag" data-skill="Data Visualization">
+                                    <i class="fas fa-chart-line mr-2"></i>Data Visualization
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Soft Skills -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold h1-color mb-4 flex items-center">
+                                <i class="fas fa-users text-green-400 mr-2"></i>
+                                Soft Skills
+                            </h3>
                         <div class="flex flex-wrap gap-3">
-                            <span class="bg-teal-500/20 text-teal-300 text-sm font-medium px-3 py-1 rounded-full">Python</span>
-                            <span class="bg-teal-500/20 text-teal-300 text-sm font-medium px-3 py-1 rounded-full">SQL</span>
-                            <span class="bg-teal-500/20 text-teal-300 text-sm font-medium px-3 py-1 rounded-full">Excel</span>
-                            <span class="bg-teal-500/20 text-teal-300 text-sm font-medium px-3 py-1 rounded-full">Power BI</span>
-                            <span class="bg-teal-500/20 text-teal-300 text-sm font-medium px-3 py-1 rounded-full">Tableau</span>
-                            <span class="bg-teal-500/20 text-teal-300 text-sm font-medium px-3 py-1 rounded-full">Data Visualization</span>
-                            <span class="bg-teal-500/20 text-teal-300 text-sm font-medium px-3 py-1 rounded-full">Leadership</span>
-                            <span class="bg-teal-500/20 text-teal-300 text-sm font-medium px-3 py-1 rounded-full">Problem Solving</span>
+                                <span class="skill-tag" data-skill="Leadership">
+                                    <i class="fas fa-crown mr-2"></i>Leadership
+                                </span>
+                                <span class="skill-tag" data-skill="Problem Solving">
+                                    <i class="fas fa-puzzle-piece mr-2"></i>Problem Solving
+                                </span>
+                                <span class="skill-tag" data-skill="Communication">
+                                    <i class="fas fa-comments mr-2"></i>Communication
+                                </span>
+                                <span class="skill-tag" data-skill="Teamwork">
+                                    <i class="fas fa-handshake mr-2"></i>Teamwork
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Skill Level Indicators -->
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-semibold h1-color mb-4 flex items-center">
+                                <i class="fas fa-chart-bar text-purple-400 mr-2"></i>
+                                Proficiency Levels
+                            </h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-200">Python</span>
+                                    <div class="flex-1 mx-4">
+                                        <div class="w-full bg-slate-700 rounded-full h-2">
+                                            <div class="bg-gradient-to-r from-blue-500 to-cyan-500 h-2 rounded-full" style="width: 85%"></div>
+                                        </div>
+                                    </div>
+                                    <span class="text-sm text-slate-400">85%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-200">Data Visualization</span>
+                                    <div class="flex-1 mx-4">
+                                        <div class="w-full bg-slate-700 rounded-full h-2">
+                                            <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style="width: 80%"></div>
+                                        </div>
+                                    </div>
+                                    <span class="text-sm text-slate-400">80%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-200">SQL</span>
+                                    <div class="flex-1 mx-4">
+                                        <div class="w-full bg-slate-700 rounded-full h-2">
+                                            <div class="bg-gradient-to-r from-green-500 to-teal-500 h-2 rounded-full" style="width: 75%"></div>
+                                        </div>
+                                    </div>
+                                    <span class="text-sm text-slate-400">75%</span>
+                                </div>
+                            </div>
                         </div>
                     </section>
                     
                     <!-- Education Card -->
-                    <section id="education" class="feed-card p-6 md:p-8">
-                         <h2 class="text-2xl font-bold text-white mb-6">Education</h2>
-                         <div class="space-y-4">
-                             <div><h3 class="font-bold text-white">Bachelor of Engineering, AI & Data Science</h3><p class="text-teal-400">Mysore University, School of Engineering</p><p class="text-sm text-slate-400">2022-2025 | CGPA: 7.6</p></div>
-                             <div><h3 class="font-bold text-white">Diploma, Electronic & Communication Engineering</h3><p class="text-teal-400">D Banumaiah's Polytechnic, Mysore</p><p class="text-sm text-slate-400">2019-2022 | 70%</p></div>
+                    <section id="education" class="glass-card p-8 rounded-2xl fade-in">
+                        <div class="flex items-center mb-8">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4" style="background: var(--secondary-gradient);">
+                                <i class="fas fa-graduation-cap text-white text-xl"></i>
+                            </div>
+                            <h2 class="text-3xl font-bold h1-color">Education</h2>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="glass-card p-6 rounded-xl">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: var(--primary-gradient);">
+                                            <i class="fas fa-university text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-bold h1-color">Bachelor of Engineering</h3>
+                                            <p class="text-lg font-semibold gradient-text">AI & Data Science</p>
+                                        </div>
+                                    </div>
+                                    <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-500/20 text-green-300">2022-2025</span>
+                                </div>
+                                <p class="text-slate-200 mb-2">Mysore University, School of Engineering</p>
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-sm text-slate-400">CGPA: <span class="h1-color font-semibold">7.6</span></span>
+                                    <span class="text-sm text-slate-400">•</span>
+                                    <span class="text-sm text-slate-400">Expected Graduation: 2025</span>
+                                </div>
+                            </div>
+                            
+                            <div class="glass-card p-6 rounded-xl">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: var(--accent-gradient);">
+                                            <i class="fas fa-certificate text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-bold h1-color">Diploma</h3>
+                                            <p class="text-lg font-semibold gradient-text">Electronic & Communication Engineering</p>
+                                        </div>
+                                    </div>
+                                    <span class="px-3 py-1 rounded-full text-sm font-medium bg-blue-500/20 text-blue-300">2019-2022</span>
+                                </div>
+                                <p class="text-slate-200 mb-2">D Banumaiah's Polytechnic, Mysore</p>
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-sm text-slate-400">Percentage: <span class="h1-color font-semibold">70%</span></span>
+                                    <span class="text-sm text-slate-400">•</span>
+                                    <span class="text-sm text-slate-400">Completed: 2022</span>
+                                </div>
+                            </div>
                          </div>
                     </section>
 
                     <!-- Certificates & Badges Card -->
-                    <section id="certificates" class="feed-card p-6 md:p-8">
-                        <h2 class="text-2xl font-bold text-white mb-6">Certificates & Badges</h2>
-                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <section id="certificates" class="glass-card p-8 rounded-2xl fade-in">
+                        <div class="flex items-center mb-8">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4" style="background: var(--accent-gradient);">
+                                <i class="fas fa-certificate text-white text-xl"></i>
+                            </div>
+                            <h2 class="text-3xl font-bold h1-color">Certificates & Badges</h2>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
                             <!-- Certificate 1 -->
-                            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-700 flex flex-col">
-                                <div class="flex items-center space-x-4 flex-grow">
-                                    <div class="flex-shrink-0">
-                                        <svg class="h-10 w-10 text-teal-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
+                            <div class="glass-card p-6 rounded-xl group hover:scale-105 transition-all duration-300">
+                                <div class="flex items-start space-x-4 mb-4">
+                                    <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: var(--primary-gradient);">
+                                        <i class="fas fa-robot text-white"></i>
                                     </div>
-                                    <div class="flex-grow">
-                                        <h3 class="font-bold text-white">AI/ML Virtual Internship by Edunet Foundation</h3>
-                                        <p class="text-sm text-slate-400">jiont CSR by Microsoft & SAP</p>
+                                    <div class="flex-1">
+                                        <h3 class="text-lg font-bold h1-color mb-1">AI/ML Virtual Internship</h3>
+                                        <p class="text-sm text-slate-400">Edunet Foundation</p>
+                                        <p class="text-xs text-slate-500">Joint CSR by Microsoft & SAP</p>
                                     </div>
                                 </div>
-                                <div class="mt-4 text-right">
-                                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7312715450256105472/" target="_blank" class="text-sm text-teal-400 hover:text-teal-300 transition duration-300">View & Verify &rarr;</a>
+                                <div class="flex items-center justify-between">
+                                    <span class="px-3 py-1 rounded-full text-xs bg-blue-500/20 text-blue-300">AI/ML</span>
+                                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7312715450256105472/" target="_blank" class="text-sm text-blue-400 hover:text-blue-300 transition duration-300 flex items-center">
+                                        View & Verify <i class="fas fa-external-link-alt ml-1"></i>
+                                    </a>
                                 </div>
                             </div>
+
                             <!-- Certificate 2 -->
-                            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-700 flex flex-col">
-                                <div class="flex items-center space-x-4 flex-grow">
-                                    <div class="flex-shrink-0">
-                                       <svg class="h-10 w-10 text-teal-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
+                            <div class="glass-card p-6 rounded-xl group hover:scale-105 transition-all duration-300">
+                                <div class="flex items-start space-x-4 mb-4">
+                                    <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: var(--secondary-gradient);">
+                                        <i class="fab fa-aws text-white"></i>
                                     </div>
-                                    <div class="flex-grow">
-                                        <h3 class="font-bold text-white">AWS Educate Introduction to Cloud 101</h3>
-                                        <p class="text-sm text-slate-400">AWS</p>
-                                    </div>
-                                </div>
-                                <div class="mt-4 text-right">
-                                     <a href="https://www.credly.com/badges/9fb8cde9-3f10-4cb3-94b6-5530d62eb519/linked_in_profile" target="_blank" class="text-sm text-teal-400 hover:text-teal-300 transition duration-300">View & Verify &rarr;</a>
-                                </div>
-                            </div>
-                            <!-- Certificate 3 -->
-                            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-700 flex flex-col">
-                                <div class="flex items-center space-x-4 flex-grow">
-                                    <div class="flex-shrink-0">
-                                        <svg class="h-10 w-10 text-teal-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                    <div class="flex-grow">
-                                        <h3 class="font-bold text-white">AWS Educate Machine Learning Foundations</h3>
+                                    <div class="flex-1">
+                                        <h3 class="text-lg font-bold h1-color mb-1">AWS Cloud 101</h3>
                                         <p class="text-sm text-slate-400">AWS Educate</p>
+                                        <p class="text-xs text-slate-500">Introduction to Cloud Computing</p>
                                     </div>
                                 </div>
-                                <div class="mt-4 text-right">
-                                     <a href="https://www.credly.com/badges/08baafc4-8f38-4a1f-9633-883014fd6eb1/linked_in_profile" target="_blank" class="text-sm text-teal-400 hover:text-teal-300 transition duration-300">View & Verify &rarr;</a>
+                                <div class="flex items-center justify-between">
+                                    <span class="px-3 py-1 rounded-full text-xs bg-orange-500/20 text-orange-300">Cloud</span>
+                                    <a href="https://www.credly.com/badges/9fb8cde9-3f10-4cb3-94b6-5530d62eb519/linked_in_profile" target="_blank" class="text-sm text-blue-400 hover:text-blue-300 transition duration-300 flex items-center">
+                                        View & Verify <i class="fas fa-external-link-alt ml-1"></i>
+                                    </a>
                                 </div>
                             </div>
+
+                            <!-- Certificate 3 -->
+                            <div class="glass-card p-6 rounded-xl group hover:scale-105 transition-all duration-300">
+                                <div class="flex items-start space-x-4 mb-4">
+                                    <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: var(--accent-gradient);">
+                                        <i class="fas fa-brain text-white"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="text-lg font-bold h1-color mb-1">AWS ML Foundations</h3>
+                                        <p class="text-sm text-slate-400">AWS Educate</p>
+                                        <p class="text-xs text-slate-500">Machine Learning Fundamentals</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="px-3 py-1 rounded-full text-xs bg-purple-500/20 text-purple-300">ML</span>
+                                    <a href="https://www.credly.com/badges/08baafc4-8f38-4a1f-9633-883014fd6eb1/linked_in_profile" target="_blank" class="text-sm text-blue-400 hover:text-blue-300 transition duration-300 flex items-center">
+                                        View & Verify <i class="fas fa-external-link-alt ml-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+
                             <!-- Certificate 4 -->
-                            <div class="bg-slate-900/50 p-6 rounded-lg border border-slate-700 flex flex-col">
-                                <div class="flex items-center space-x-4 flex-grow">
-                                    <div class="flex-shrink-0">
-                                        <svg class="h-10 w-10 text-teal-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
+                            <div class="glass-card p-6 rounded-xl group hover:scale-105 transition-all duration-300">
+                                <div class="flex items-start space-x-4 mb-4">
+                                    <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: var(--primary-gradient);">
+                                        <i class="fas fa-chart-bar text-white"></i>
                                     </div>
-                                    <div class="flex-grow">
-                                        <h3 class="font-bold text-white"> Data Analytics from SkillUp by Simplilearn</h3>
+                                    <div class="flex-1">
+                                        <h3 class="text-lg font-bold h1-color mb-1">Data Analytics</h3>
                                         <p class="text-sm text-slate-400">Simplilearn</p>
+                                        <p class="text-xs text-slate-500">SkillUp Program</p>
                                     </div>
                                 </div>
-                                <div class="mt-4 text-right">
-                                     <a href="https://www.simplilearn.com/skillup-certificate-landing?token=eyJjb3Vyc2VfaWQiOiIxMjE3IiwiY2VydGlmaWNhdGVfdXJsIjoiaHR0cHM6XC9cL2NlcnRpZmljYXRlcy5zaW1wbGljZG4ubmV0XC9zaGFyZVwvODkyMzA1OV85MTk2NTM3MTc1NzE0NjI4OTkzMi5wbmciLCJ1c2VybmFtZSI6IlZpc21heSBNdXJ0aHkgViJ9&utm_source=shared-certificate&utm_medium=lms&utm_campaign=shared-certificate-promotion&referrer=https%3A%2F%2Flms.simplilearn.com%2Fcourses%2F3794%2FIntroduction-to-Data-Analytics%2Fcertificate%2Fdownload-skillup&%24web_only=true&_branch_match_id=1492790104456706961&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXL87MLcjJ1EssKNDLyczL1k%2FVN8kw8ywJCbAoDE%2ByrytKTUstKsrMS49PKsovL04tsvUBqkpN8cwDAD7PKK9BAAAA" target="_blank" class="text-sm text-teal-400 hover:text-teal-300 transition duration-300">View & Verify &rarr;</a>
+                                <div class="flex items-center justify-between">
+                                    <span class="px-3 py-1 rounded-full text-xs bg-green-500/20 text-green-300">Analytics</span>
+                                    <a href="https://www.simplilearn.com/skillup-certificate-landing?token=eyJjb3Vyc2VfaWQiOiIxMjE3IiwiY2VydGlmaWNhdGVfdXJsIjoiaHR0cHM6XC9cL2NlcnRpZmljYXRlcy5zaW1wbGljZG4ubmV0XC9zaGFyZVwvODkyMzA1OV85MTk2NTM3MTc1NzE0NjI4OTkzMi5wbmciLCJ1c2VybmFtZSI6IlZpc21heSBNdXJ0aHkgViJ9&utm_source=shared-certificate&utm_medium=lms&utm_campaign=shared-certificate-promotion&referrer=https%3A%2F%2Flms.simplilearn.com%2Fcourses%2F3794%2FIntroduction-to-Data-Analytics%2Fcertificate%2Fdownload-skillup&%24web_only=true&_branch_match_id=1492790104456706961&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXL87MLcjJ1EssKNDLyczL1k%2FVN8kw8ywJCbAoDE%2ByrytKTUstKsrMS49PKsovL04tsvUBqkpN8cwDAD7PKK9BAAAA" target="_blank" class="text-sm text-blue-400 hover:text-blue-300 transition duration-300 flex items-center">
+                                        View & Verify <i class="fas fa-external-link-alt ml-1"></i>
+                                    </a>
                                 </div>
-                            
                             </div>
                         </div>
                     </section>
 
                     <!-- Contact Card -->
-                    <section id="contact" class="feed-card p-6 md:p-8 text-center">
-                        <h2 class="text-2xl font-bold text-white mb-4">Get In Touch</h2>
-                        <p class="max-w-md mx-auto mb-6">I'm currently looking for new opportunities. Feel free to reach out if you have any questions!</p>
-                        <a href="mailto:vismayyou7@gmail.com" class="bg-teal-500 text-white font-bold py-3 px-8 rounded-lg hover:bg-teal-600 transition duration-300 inline-block">Say Hello</a>
+                    <section id="contact" class="glass-card p-8 rounded-2xl fade-in text-center">
+                        <div class="flex items-center justify-center mb-8">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4" style="background: var(--primary-gradient);">
+                                <i class="fas fa-envelope text-white text-xl"></i>
+                            </div>
+                            <h2 class="text-3xl font-bold h1-color">Get In Touch</h2>
+                        </div>
+                        
+                        <div class="max-w-2xl mx-auto">
+                            <p class="text-lg text-slate-200 mb-8 leading-relaxed">
+                                I'm currently looking for new opportunities in <span class="gradient-text font-semibold">AI & Data Science</span>. 
+                                Feel free to reach out if you have any questions or would like to collaborate!
+                            </p>
+                            
+                            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                                <div class="glass-card p-6 rounded-xl text-center">
+                                    <div class="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center" style="background: var(--accent-gradient);">
+                                        <i class="fas fa-envelope text-white text-xl"></i>
+                                    </div>
+                                    <h3 class="text-lg font-semibold h1-color mb-2">Email</h3>
+                                    <p class="text-slate-400 mb-4">vismayyou7@gmail.com</p>
+                                    <a href="mailto:vismayyou7@gmail.com" class="btn-primary inline-block">
+                                        <i class="fas fa-paper-plane mr-2"></i>Send Email
+                                    </a>
+                                </div>
+                                
+                                <div class="glass-card p-6 rounded-xl text-center">
+                                    <div class="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center" style="background: var(--secondary-gradient);">
+                                        <i class="fab fa-linkedin text-white text-xl"></i>
+                                    </div>
+                                    <h3 class="text-lg font-semibold h1-color mb-2">LinkedIn</h3>
+                                    <p class="text-slate-400 mb-4">Connect with me</p>
+                                    <a href="https://linkedin.com/in/vismay-murthy-20bb9a283" target="_blank" class="btn-primary inline-block">
+                                        <i class="fab fa-linkedin mr-2"></i>Connect
+                                    </a>
+                                </div>
+                            </div>
+                            
+                        </div>
                     </section>
 
                 </div>
-                 <footer class="text-center py-8 text-slate-500 text-sm">
-                    <p>&copy; 2025 Vismay Murthy V. All Rights Reserved.</p>
+                
+                <footer class="text-center py-8 text-slate-500 text-sm">
+                    <div class="glass-card p-6 rounded-xl max-w-md mx-auto">
+                        <p class="mb-2">&copy; 2025 Vismay Murthy V. All Rights Reserved.</p>
+                    </div>
                 </footer>
             </main>
 
@@ -284,25 +814,114 @@
     </div>
 
     <script>
-        // Active link highlighting on scroll
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const mainContent = document.querySelector('.main-content');
+        // Enhanced JavaScript functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mainContent = document.querySelector('.main-content');
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
 
-        mainContent.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (mainContent.scrollTop >= sectionTop - 100) { // adjusted offset for better accuracy
-                    current = section.getAttribute('id');
+            // Initialize Theme Toggle State (based on HTML class)
+            if (document.documentElement.classList.contains('dark-theme')) {
+                themeToggle.classList.add('active');
+            }
+
+            // Scroll spy functionality
+            function updateActiveLink() {
+                let current = '';
+                const scrollOffset = mainContent.scrollTop;
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (scrollOffset >= sectionTop - 180) { 
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active-link');
+                    const linkHref = link.getAttribute('href');
+                    if (linkHref && linkHref.includes(current)) {
+                        link.classList.add('active-link');
+                    }
+                });
+            }
+
+            mainContent.addEventListener('scroll', updateActiveLink);
+            updateActiveLink(); 
+
+            // Smooth scrolling for navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        
+                        navLinks.forEach(l => l.classList.remove('active-link'));
+                        this.classList.add('active-link');
+                    }
+                });
+            });
+
+            // Theme toggle functionality (Toggles the CSS class on the HTML element)
+            themeToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                
+                const htmlEl = document.documentElement;
+                if (htmlEl.classList.contains('dark-theme')) {
+                    htmlEl.classList.remove('dark-theme');
+                    htmlEl.classList.add('light-theme');
+                } else {
+                    htmlEl.classList.remove('light-theme');
+                    htmlEl.classList.add('dark-theme');
                 }
             });
 
-            navLinks.forEach(link => {
-                link.classList.remove('active-link');
-                const linkHref = link.getAttribute('href');
-                if (linkHref && linkHref.includes(current)) {
-                    link.classList.add('active-link');
+            // Fade in animation on scroll (Intersection Observer)
+            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in').forEach(el => { observer.observe(el); });
+
+            // Typing animation for the title
+            const typingElement = document.querySelector('.typing-animation');
+            if (typingElement) {
+                const text = typingElement.getAttribute('data-text'); 
+                typingElement.textContent = '';
+                
+                let i = 0;
+                function typeWriter() {
+                    if (i < text.length) {
+                        typingElement.textContent = text.substring(0, i + 1);
+                        i++;
+                        setTimeout(typeWriter, 100);
+                    }
+                }
+                
+                setTimeout(typeWriter, 1000);
+            }
+
+            // Parallax effect for background 
+            mainContent.addEventListener('scroll', function() {
+                const scrolled = mainContent.scrollTop;
+                const parallax = document.querySelector('.bg-animated');
+                if (parallax) {
+                    const speed = scrolled * 0.1; 
+                    parallax.style.transform = `translateY(${speed}px)`;
                 }
             });
         });
@@ -310,5 +929,4 @@
 
 </body>
 </html>
-
 
